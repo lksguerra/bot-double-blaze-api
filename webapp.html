@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Bot Double Blaze - Análise Casino Automática | Estratégias de Double</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Bot automático para Double Blaze com análise avançada de padrões. Estratégias de casino, análise double, bot casino e predições inteligentes para maximizar ganhos.">
+    <meta name="keywords" content="blaze, double, bot double, casino, análise double, estratégias casino, bot blaze, double blaze, casino online, análise casino, bot automático, predição double">
+    <meta name="author" content="Bot Double Blaze">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Bot Double Blaze - Análise Casino Automática">
+    <meta property="og:description" content="Sistema avançado de análise para Double Blaze com bot automático e estratégias comprovadas">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/667eea/ffffff?text=Bot+Double+Blaze">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bot Double Blaze - Análise Casino">
+    <meta name="twitter:description" content="Bot automático para Double Blaze com análise avançada de padrões">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://botdoubleblaze.com">
+    
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Bot Double Blaze",
+      "description": "Bot automático para análise de padrões do Double Blaze com estratégias avançadas de casino",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "featureList": [
+        "Bot automático 24/7",
+        "Análise de padrões em tempo real", 
+        "7 estratégias de casino",
+        "Gestão de risco inteligente",
+        "Interface responsiva"
+      ],
+      "keywords": "bot double blaze, análise double, casino online, estratégias casino, bot automático",
+      "author": {
+        "@type": "Organization",
+        "name": "Bot Double Blaze"
+      }
+    }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .controls {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: #667eea; }
+        .btn-secondary { background: #f5576c; }
+        .btn-success { background: #00f2fe; }
+        .btn:hover { transform: translateY(-2px); }
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .result-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .color-red { color: #e74c3c; font-weight: bold; }
+        .color-black { color: #2c3e50; font-weight: bold; }
+        .color-white { color: #7f8c8d; font-weight: bold; }
+        .confidence {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
+            transition: width 0.8s ease;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .api-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .online { background: #d4edda; color: #155724; }
+        .offline { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="api-status" id="apiStatus">🔄 Verificando...</div>
+    
+    <div class="container">
+        <h1>🎰 Bot Double Blaze - Análise Casino Automática</h1>
+        <p style="text-align: center; color: white; margin-bottom: 20px; font-size: 1.1rem;">
+            🤖 Sistema avançado de análise para Double • Estratégias de casino comprovadas • Bot automático 24/7
+        </p>
+        
+        <div class="controls">
+            <div class="input-group">
+                <label>💰 Valor da Aposta (R$)</label>
+                <input type="number" id="betAmount" value="50" min="10" step="10">
+            </div>
+            
+            <!-- URL da API configurada automaticamente -->
+            <input type="hidden" id="apiUrl" value="https://botdoubleblaze-api.onrender.com">
+            
+            <button class="btn btn-primary" onclick="getPrediction('basic')">
+                🎯 Análise Básica
+            </button>
+            
+            <button class="btn btn-secondary" onclick="getPrediction('advanced')">
+                🤖 Bot Avançado
+            </button>
+            
+            <button class="btn btn-success" onclick="comparePredictions()">
+                📊 Análise Completa
+            </button>
+        </div>
+
+        <div id="results" class="results"></div>
+        
+        <!-- Conteúdo SEO -->
+        <div style="margin-top: 40px; padding: 30px; background: rgba(255,255,255,0.95); border-radius: 15px; color: #333;">
+            <h2 style="color: #667eea; margin-bottom: 20px;">🎰 Sobre o Bot Double Blaze</h2>
+            <p style="margin-bottom: 15px;">
+                Nosso <strong>bot double blaze</strong> utiliza algoritmos avançados para análise de padrões em tempo real. 
+                Com mais de <strong>7 estratégias de casino</strong> comprovadas, oferecemos a melhor 
+                <strong>análise double</strong> disponível no mercado.
+            </p>
+            <p style="margin-bottom: 15px;">
+                ✅ <strong>Bot automático 24/7</strong> - Análise contínua de padrões<br>
+                ✅ <strong>Estratégias casino</strong> - Métodos testados e aprovados<br>
+                ✅ <strong>Análise double avançada</strong> - IA e estatística aplicada<br>
+                ✅ <strong>Casino online</strong> - Compatível com plataformas principais
+            </p>
+            
+            <h3 style="color: #667eea; margin: 25px 0 15px 0;">🤖 Como Funciona o Bot</h3>
+            <p style="margin-bottom: 15px;">
+                Nosso sistema de <strong>bot casino</strong> analisa milhares de resultados do <strong>double blaze</strong> 
+                para identificar padrões e tendências. A <strong>análise casino</strong> é feita em tempo real, 
+                fornecendo predições precisas para suas estratégias.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 25px;">
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">🎯 Precisão</h4>
+                    <p>Alta taxa de acerto com análise estatística avançada</p>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">⚡ Velocidade</h4>
+                    <p>Resultados instantâneos para aproveitamento rápido</p>
+                </div>
+                <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h4 style="color: #667eea;">🛡️ Segurança</h4>
+                    <p>Gestão de risco inteligente em todas as apostas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificar status da API
+        async function checkApiStatus() {
+            const statusElement = document.getElementById('apiStatus');
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            try {
+                const response = await fetch(`${apiUrl}/health`);
+                if (response.ok) {
+                    const data = await response.json();
+                    statusElement.textContent = `✅ ${data.status}`;
+                    statusElement.className = 'api-status online';
+                } else {
+                    throw new Error('API não respondeu');
+                }
+            } catch (error) {
+                statusElement.textContent = '❌ Offline';
+                statusElement.className = 'api-status offline';
+            }
+        }
+
+        // Fazer predição
+        async function getPrediction(type) {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            const apiUrl = document.getElementById('apiUrl').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (betAmount < 10 || betAmount % 10 !== 0) {
+                showError('Valor deve ser múltiplo de 10 e pelo menos R$10');
+                return;
+            }
+
+            showLoading();
+            
+            try {
+                const endpoint = type === 'advanced' ? '/api/predict-advanced' : '/api/predict';
+                const response = await fetch(`${apiUrl}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ betAmount })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayPrediction(data, type);
+                
+            } catch (error) {
+                showError(`Erro: ${error.message}`);
+            }
+        }
+
+        // Comparar predições
+        async function comparePredictions() {
+            const betAmount = parseInt(document.getElementById('betAmount').value);
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`${apiUrl}/api/compare-predictions`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ betAmount })
+                });
+
+                const data = await response.json();
+                displayComparison(data);
+                
+            } catch (error) {
+                showError(`Erro: ${error.message}`);
+            }
+        }
+
+        // Exibir predição
+        function displayPrediction(data, type) {
+            const prediction = data.predicao;
+            const colorClass = prediction.corPredita === 1 ? 'color-red' : 
+                             prediction.corPredita === 2 ? 'color-black' : 'color-white';
+            
+            const html = `
+                <div class="result-card">
+                    <h3>${type === 'advanced' ? '🚀' : '🎯'} Predição ${type === 'advanced' ? 'Avançada' : 'Básica'}</h3>
+                    
+                    <p><strong>🎨 Cor:</strong> <span class="${colorClass}">${prediction.nomeCor}</span></p>
+                    <p><strong>📊 Confiança:</strong> ${prediction.confianca}%</p>
+                    
+                    <div class="confidence">
+                        <div class="confidence-fill" style="width: ${prediction.confianca}%"></div>
+                    </div>
+                    
+                    <p><strong>💰 Principal:</strong> R$ ${prediction.estrategiaAposta.valorCorPrincipal}</p>
+                    <p><strong>🛡️ Segurança:</strong> R$ ${prediction.estrategiaAposta.valorBranco}</p>
+                    <p><strong>🧠 Raciocínio:</strong> ${prediction.raciocinador}</p>
+                    
+                    ${prediction.probabilidades ? `
+                    <hr style="margin: 15px 0;">
+                    <p><strong>🎯 Probabilidades:</strong></p>
+                    <p>🔴 Vermelho: ${prediction.probabilidades.vermelho}%</p>
+                    <p>⚫ Preto: ${prediction.probabilidades.preto}%</p>
+                    <p>⚪ Branco: ${prediction.probabilidades.branco}%</p>
+                    ` : ''}
+                    
+                    ${prediction.indicadores ? `
+                    <hr style="margin: 15px 0;">
+                    <p><strong>📊 Indicadores:</strong></p>
+                    <p>Volatilidade: ${prediction.indicadores.volatilidade}</p>
+                    <p>Momentum: ${prediction.indicadores.momentum}</p>
+                    <p>Tendência: ${prediction.indicadores.tendencia}</p>
+                    ` : ''}
+                </div>
+            `;
+            
+            document.getElementById('results').innerHTML = html;
+        }
+
+        // Exibir comparação
+        function displayComparison(data) {
+            const comp = data.comparacao;
+            
+            const html = `
+                <div class="result-card">
+                    <h3>🔵 Básica</h3>
+                    <p><strong>Cor:</strong> ${comp.basica.cor}</p>
+                    <p><strong>Confiança:</strong> ${comp.basica.confianca}%</p>
+                    <div class="confidence">
+                        <div class="confidence-fill" style="width: ${comp.basica.confianca}%"></div>
+                    </div>
+                    <p><strong>Principal:</strong> R$ ${comp.basica.aposta}</p>
+                    <p><strong>Segurança:</strong> R$ ${comp.basica.seguranca}</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3>🚀 Avançada</h3>
+                    <p><strong>Cor:</strong> ${comp.avancada.cor}</p>
+                    <p><strong>Confiança:</strong> ${comp.avancada.confianca}%</p>
+                    <div class="confidence">
+                        <div class="confidence-fill" style="width: ${comp.avancada.confianca}%"></div>
+                    </div>
+                    <p><strong>Principal:</strong> R$ ${comp.avancada.aposta}</p>
+                    <p><strong>Segurança:</strong> R$ ${comp.avancada.seguranca}</p>
+                    
+                    ${comp.avancada.indicadores ? `
+                    <hr style="margin: 15px 0;">
+                    <p><strong>Indicadores:</strong></p>
+                    <p>Volatilidade: ${comp.avancada.indicadores.volatilidade}</p>
+                    <p>Momentum: ${comp.avancada.indicadores.momentum}</p>
+                    ` : ''}
+                </div>
+                
+                <div class="result-card" style="grid-column: 1 / -1;">
+                    <h3>💡 Recomendação</h3>
+                    <p style="text-align: center; font-size: 1.1em;">
+                        <strong>${data.recomendacao}</strong>
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('results').innerHTML = html;
+        }
+
+        function showLoading() {
+            document.getElementById('results').innerHTML = `
+                <div class="loading">
+                    <p>🤖 Bot analisando padrões do Double Blaze...</p>
+                    <p style="font-size: 0.9rem; color: #666;">Processando estratégias de casino e análise estatística</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('results').innerHTML = `
+                <div class="error">
+                    <strong>❌ Erro:</strong> ${message}
+                </div>
+            `;
+        }
+
+        // Verificar API quando carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            checkApiStatus();
+            setInterval(checkApiStatus, 30000);
+        });
+    </script>
+</body>
+</html> 
