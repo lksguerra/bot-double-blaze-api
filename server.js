@@ -21,29 +21,81 @@ const RECENT_GAMES_URL = 'https://blaze.bet.br/api/singleplayer-originals/origin
 const predictionEngine = new PredictionEngine();
 const advancedEngine = new AdvancedPredictionEngine();
 
-// Helper function to fetch data from Blaze APIs
-async function fetchBlazeData() {
+// Configuração de proxy brasileiro para contornar bloqueio geográfico
+const proxyConfig = {
+    timeout: 15000,
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Origin': 'https://blaze.bet.br',
+        'Referer': 'https://blaze.bet.br/',
+        'Connection': 'keep-alive',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin'
+    }
+};
+
+// Helper function to fetch data from Blaze APIs com retry e fallback
+async function fetchBlazeData(retryCount = 0) {
     try {
+        console.log(`🌍 Tentativa ${retryCount + 1} - Buscando dados da Blaze...`);
+        
         const [currentResponse, recentResponse] = await Promise.all([
-            axios.get(CURRENT_GAME_URL, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-            }),
-            axios.get(RECENT_GAMES_URL, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-            })
+            axios.get(CURRENT_GAME_URL, proxyConfig),
+            axios.get(RECENT_GAMES_URL, proxyConfig)
         ]);
 
+        console.log('✅ Dados obtidos com sucesso da Blaze!');
         return {
             current: currentResponse.data,
             recent: recentResponse.data
         };
+        
     } catch (error) {
-        console.error('Erro ao buscar dados da Blaze:', error.message);
+        console.error(`❌ Erro na tentativa ${retryCount + 1}:`, error.message);
+        
+        // Retry até 3 vezes com delay
+        if (retryCount < 2) {
+            console.log(`🔄 Tentando novamente em 2 segundos...`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            return fetchBlazeData(retryCount + 1);
+        }
+        
+        // Se falhar todas as tentativas, usar serviço de proxy
+        if (process.env.NODE_ENV === 'production') {
+            return await fetchWithProxyService();
+        }
+        
         throw new Error('Falha ao buscar dados da API da Blaze');
+    }
+}
+
+// Função para usar serviço de proxy quando necessário
+async function fetchWithProxyService() {
+    try {
+        console.log('🌐 Tentando com serviço de proxy...');
+        
+        // Usando AllOrigins como proxy (gratuito)
+        const currentProxy = `https://api.allorigins.win/get?url=${encodeURIComponent(CURRENT_GAME_URL)}`;
+        const recentProxy = `https://api.allorigins.win/get?url=${encodeURIComponent(RECENT_GAMES_URL)}`;
+        
+        const [currentResponse, recentResponse] = await Promise.all([
+            axios.get(currentProxy, { timeout: 20000 }),
+            axios.get(recentProxy, { timeout: 20000 })
+        ]);
+
+        console.log('✅ Dados obtidos via proxy!');
+        return {
+            current: JSON.parse(currentResponse.data.contents),
+            recent: JSON.parse(recentResponse.data.contents)
+        };
+        
+    } catch (proxyError) {
+        console.error('❌ Proxy também falhou:', proxyError.message);
+        throw new Error('Blaze API temporariamente indisponível. Tente novamente em alguns minutos.');
     }
 }
 
@@ -189,6 +241,7 @@ app.get('/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 API de Predição Blaze rodando na porta ${PORT}`);
     console.log(`📊 Acesse a API em http://localhost:${PORT}`);
+    console.log(`🌍 Modo: ${process.env.NODE_ENV || 'development'}`);
 });
 
 module.exports = app; 
